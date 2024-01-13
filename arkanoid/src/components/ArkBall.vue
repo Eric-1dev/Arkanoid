@@ -94,7 +94,7 @@ export default {
             }
 
             const ballX = this.batPosition.x + this.batPosition.width / 2 - 20;
-            const ballY = this.ballZonePosition.y + this.ballZonePosition.height - this.size;
+            const ballY = this.ballZonePosition.y + this.ballZonePosition.height - this.size - 1;
 
             this.$refs.ballElem.style.left = `${ballX}px`;
             this.$refs.ballElem.style.top = `${ballY}px`;
@@ -132,17 +132,44 @@ export default {
 
             if (this.ballPos.y <= this.ballZonePosition.y) {
                 this.directionY = 1;
-            } else if (this.ballPos.y + this.ballPos.height - 1 >= this.ballZonePosition.y + this.ballZonePosition.height) {
+            } else if (this.ballPos.y + this.ballPos.height >= this.ballZonePosition.y + this.ballZonePosition.height) {
                 if (this.checkBatCollision()) {
                     this.directionY = -1;
                 } else {
-                    this.gameOver();
+                    setTimeout(this.gameOver, 25);
                 }
             } 
         },
 
         checkBatCollision() {
-            return true;
+            const isCollision = this.ballPos.x + this.ballPos.width >= this.batPosition.x && this.ballPos.x <= this.batPosition.x + this.batPosition.width;
+
+            if (isCollision) {
+                const ballY = this.ballZonePosition.y + this.ballZonePosition.width;
+                this.$refs.ballElem.style.top = `${ballY}px`;
+
+                const ballCenter = this.ballPos.x + this.ballPos.width / 2;
+                const batCenter = this.batPosition.x + this.batPosition.width / 2;
+
+                const dif = batCenter - ballCenter;
+
+                const interception = Math.abs(dif / this.batPosition.width);
+
+                this.angle = 1 - interception;
+
+                console.log(ballY);
+                console.log(this.ballPos.y);
+
+                if (dif < 0) {
+                    this.directionX = 1;
+                } else {
+                    this.directionX = -1;
+                }
+
+                this.calculateDeltas();
+            }
+
+            return isCollision;
         },
 
         gameOver() {

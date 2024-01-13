@@ -30,5 +30,6 @@ export default {
 <style lang="css" scoped>
 .ball-zone-container {
     height: 100%;
+    overflow: hidden;
 }
 </style>
