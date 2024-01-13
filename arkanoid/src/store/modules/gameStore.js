@@ -2,28 +2,64 @@ const gameStore = {
     namespaced: true,
 
     state: {
-        batLeftPosition: 0,
-        batWidth: 0
+        batPosition: {
+            x: Number,
+            width: Number
+        },
+
+        ballZonePosition: {
+            x: Number,
+            y: Number,
+            width: Number,
+            height: Number
+        },
+
+        isGameRunning: Boolean,
+        isBallFree: Boolean
     },
 
     mutations: {
-        setBatLeftPosition(state, value) {
-            state.batLeftPosition = value;
+        setBatXPosition(state, value) {
+            state.batPosition.x = value;
         },
 
         setBatWidth(state, value) {
-            state.batWidth = value;
+            state.batPosition.width = value;
+        },
+
+        setBallZonePosition(state, value) {
+            state.ballZonePosition = value;
+        },
+
+        setGameRunning(state, value) {
+            state.isGameRunning = value;
+        },
+
+        setIsBallFree(state, value) {
+            state.isBallFree = value;
         }
     },
 
     actions: {
-        setBatLeftPosition({ commit }, value) {
-            commit('setBatLeftPosition', value);
+        setBatXPosition({ commit }, value) {
+            commit('setBatXPosition', value);
         },
 
         setBatWidth({ commit }, value) {
             commit('setBatWidth', value);
         },
+
+        setBallZonePosition({ commit }, value) {
+            commit('setBallZonePosition', value);
+        },
+
+        setGameRunning({ commit }, value) {
+            commit('setGameRunning', value);
+        },
+
+        setIsBallFree({ commit }, value) {
+            commit('setIsBallFree', value);
+        }
     }
 };
 

@@ -3,11 +3,6 @@
         <div class="bat-container" ref="batContainerElem">
             <div class="bat" ref="batElem"></div>
         </div>
-        <div class="info-block">
-            <div>mouseX = {{ mouseX }}</div>
-            <div>batContainerLeft = {{ batContainerLeft }}</div>
-            <div>batContainerRight = {{ batContainerRight }}</div>
-        </div>
     </div>
 </template>
 
@@ -17,22 +12,13 @@ import { mapState } from 'vuex';
 export default {
     name: "ArkBat",
 
-    data() {
-        return {
-            mouseX: 0,
-            batContainerLeft: 0,
-            batContainerRight: 0,
-        }
-    },
-
     props: {
         widthMode: String
     },
 
     computed: {
         ...mapState({
-            // batLeftPosition: state => state.gameStore.batLeftPosition,
-            batWidth: state => state.gameStore.batWidth
+            batWidth: state => state.gameStore.batPosition.width
         }),
     },
 
@@ -50,21 +36,19 @@ export default {
 
     methods: {
         mouseMove(event) {
-            this.mouseX = event.pageX;
-
-            let leftPosition = event.pageX - this.batWidth / 2;
+            let batX = event.pageX - this.batWidth / 2;
 
             const containerPos = this.$refs.batContainerElem.getBoundingClientRect();
 
-            if (leftPosition < containerPos.x) {
-                leftPosition = containerPos.x;
-            } else if (leftPosition + this.batWidth > containerPos.x + containerPos.width) {
-                leftPosition = containerPos.x + containerPos.width - this.batWidth;
+            if (batX < containerPos.x) {
+                batX = containerPos.x;
+            } else if (batX + this.batWidth > containerPos.x + containerPos.width) {
+                batX = containerPos.x + containerPos.width - this.batWidth;
             }
 
-            this.$store.dispatch('gameStore/setBatLeftPosition', leftPosition);
+            this.$store.dispatch('gameStore/setBatXPosition', batX);
 
-            this.$refs.batElem.style.left = `${leftPosition}px`;
+            this.$refs.batElem.style.left = `${batX}px`;
         },
 
         updateBatWidth() {
@@ -103,12 +87,6 @@ export default {
     border: 1px solid black;
     border-radius: 12px;
     background-color: antiquewhite;
-}
-
-.info-block {
-    position: fixed;
-    bottom: 0;
-    right: 0;
 }
 
 .info-block > div {

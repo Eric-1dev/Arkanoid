@@ -1,4 +1,4 @@
-# arkanoid
+# Arkanoid game
 
 ## Project setup
 ```
